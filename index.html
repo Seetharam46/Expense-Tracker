@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Expense Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Expense Tracker</h1>
+    <div class="top-controls">
+      <div class="search-group">
+        <input type="text" id="search" aria-label="Search" placeholder="Search" />
+        <button class="summary-btn" id="openSummaryBtn" title="Show Expense" aria-label="Show Expense">&rarr;</button>
+      </div>
+      <div class="filters">
+        <select id="categoryFilter" aria-label="Filter by Category">
+          <option value="all">All Categories</option>
+          <option value="Transport">Transport</option>
+          <option value="Food">Food</option>
+          <option value="Others">Others</option>
+        </select>
+        <select id="monthFilter" aria-label="Filter by Month">
+          <option value="all">All Months</option>
+        </select>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section style="margin-bottom: 1.13rem;">
+      <canvas id="comparisonChart" height="128" aria-label="Comparison chart"></canvas>
+    </section>
+    <section id="expenseList" aria-live="polite"></section>
+  </main>
+  <button id="addBtn" aria-label="Add new expense" title="Add Expense">+</button>
+
+  <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="modalTitle">Add Expense</span>
+        <button id="closeModal" tabindex="0" aria-label="Close">&times;</button>
+      </div>
+      <form id="expenseForm" autocomplete="off">
+        <input type="number" id="amount" placeholder="Amount (₹)" min="1" step="1" required aria-label="Amount (₹)" />
+        <select id="category" required aria-label="Category">
+          <option value="" disabled selected>Select Category</option>
+          <option value="Transport">Transport</option>
+          <option value="Food">Food</option>
+          <option value="Others">Others</option>
+        </select>
+        <input type="text" id="note" placeholder="Note" maxlength="15" required aria-label="Note" />
+        <button type="submit" id="saveBtn">Save</button>
+        <input type="hidden" id="editIdx" />
+      </form>
+    </div>
+  </div>
+
+  <div id="snackbar">Expense deleted. <button id="undoButton" tabindex="0">Undo</button></div>
+
+  <!-- SLIDING SUMMARY PANEL -->
+  <div id="summaryPanel">
+    <div class="summary-panel-header">
+      <span class="summary-panel-title">Expense</span>
+      <button id="closeSummaryBtn" aria-label="Close Summary">&times;</button>
+    </div>
+    <div class="summary-content">
+      <div id="summaryAmount"></div>
+      <div id="summaryPanelBody"></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+</body>
+</html>
