@@ -351,3 +351,17 @@ main {max-width: 570px; margin: 0 auto; padding: 1.2rem 1rem 2.2rem;}
   #summaryPanel.open { bottom: 0; }
   .summary-inline-amount { font-size: 1.22em; margin: 0.8em 0 0.2em 0; }
   }
+.amount.negative {
+  color: #e53935;
+  font-weight: 600;
+}
+.amount.positive {
+  color: #0d8a47;
+}
+.summary-inline-amount.negative {
+  color: #e53935;
+}
+.summary-inline-amount.positive {
+  color: #0d8a47;
+}
+
