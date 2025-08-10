@@ -350,18 +350,76 @@ main {max-width: 570px; margin: 0 auto; padding: 1.2rem 1rem 2.2rem;}
   }
   #summaryPanel.open { bottom: 0; }
   .summary-inline-amount { font-size: 1.22em; margin: 0.8em 0 0.2em 0; }
-  }
-.amount.negative {
-  color: #e53935;
-  font-weight: 600;
-}
-.amount.positive {
-  color: #0d8a47;
-}
-.summary-inline-amount.negative {
-  color: #e53935;
-}
-.summary-inline-amount.positive {
-  color: #0d8a47;
 }
 
+/* IMPROVED DELETE MODAL STYLES */
+.delete-modal-content {
+  border: 2px solid #e53935;
+  box-shadow: 0 4px 24px #e5393529;
+  animation: showModal 0.28s cubic-bezier(.22,1.11,.51,.95);
+}
+
+.delete-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.btn-delete {
+  background: linear-gradient(90deg, #e53935 70%, #ffc5c1 120%);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: 9px;
+  padding: .75rem 1.6rem;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #e5393530;
+  transition: background 0.14s, filter 0.16s;
+}
+
+.btn-delete:hover, .btn-delete:focus {
+  background: linear-gradient(97deg, #cc1414 80%, #e53935 120%);
+  filter: brightness(1.08);
+  outline: 2px solid #e5393533;
+}
+
+.btn-cancel {
+  background: #e3e6eb;
+  color: #333;
+  font-weight: 600;
+  border: none;
+  border-radius: 9px;
+  padding: .75rem 1.6rem;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 1px 4px #aaa3;
+  transition: background 0.13s;
+}
+
+.btn-cancel:hover, .btn-cancel:focus {
+  background: #c9c9c9;
+  outline: 2px solid #b7bac2;
+}
+
+#confirmModal.show {
+  display: flex;
+  /* Dimmer backdrop for strong focus when delete is open */
+  background: rgba(235,60,60,0.15);
+}
+#confirmModal .modal-content {
+  padding: 1rem;
+  border-radius: 12px;
+}
+#cancelDelete, #confirmDeleteBtn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#cancelDelete { background: #e0e0e0; }
+#cancelDelete:hover { background: #ccc; }
+#confirmDeleteBtn { background: #e53935; color: #fff; }
+#confirmDeleteBtn:hover { background: #c62828; }
+
+  
