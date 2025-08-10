@@ -16,13 +16,13 @@
         <button class="summary-btn" id="openSummaryBtn" title="Show Expense" aria-label="Show Expense">&rarr;</button>
       </div>
       <div class="filters">
-        <select id="categoryFilter" aria-label="Filter by Category">
+        <select id="categoryFilter">
           <option value="all">All Categories</option>
           <option value="Transport">Transport</option>
           <option value="Food">Food</option>
           <option value="Others">Others</option>
         </select>
-        <select id="monthFilter" aria-label="Filter by Month">
+        <select id="monthFilter">
           <option value="all">All Months</option>
         </select>
       </div>
@@ -30,44 +30,41 @@
   </header>
 
   <main>
-    <section style="margin-bottom: 1.13rem;">
-      <canvas id="comparisonChart" height="128" aria-label="Comparison chart"></canvas>
-    </section>
     <section id="expenseList" aria-live="polite"></section>
   </main>
 
   <button id="addBtn" aria-label="Add new expense" title="Add Expense">+</button>
 
   <!-- Expense Modal -->
-  <div id="expenseModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div id="expenseModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
         <span id="modalTitle">Add Expense</span>
-        <button id="closeModal" tabindex="0" aria-label="Close">&times;</button>
+        <button id="closeModal">&times;</button>
       </div>
-      <form id="expenseForm" autocomplete="off">
-        <!-- ✅ Allow negative amount -->
-        <input type="number" id="amount" placeholder="Amount (₹)" step="1" required aria-label="Amount (₹)" />
-        <select id="category" required aria-label="Category">
+      <form id="expenseForm">
+        <input type="number" id="amount" placeholder="Amount (₹)" step="1" required />
+        <select id="category" required>
           <option value="" disabled selected>Select Category</option>
           <option value="Transport">Transport</option>
           <option value="Food">Food</option>
           <option value="Others">Others</option>
         </select>
-        <input type="text" id="note" placeholder="Note" maxlength="15" required aria-label="Note" />
+        <input type="text" id="note" placeholder="Note" maxlength="15" required />
         <button type="submit" id="saveBtn">Save</button>
         <input type="hidden" id="editIdx" />
       </form>
     </div>
   </div>
 
-  <div id="snackbar">Expense deleted. <button id="undoButton" tabindex="0">Undo</button></div>
+  <!-- Snackbar -->
+  <div id="snackbar">Expense deleted. <button id="undoButton">Undo</button></div>
 
   <!-- Summary Panel -->
   <div id="summaryPanel">
     <div class="summary-panel-header">
       <span class="summary-panel-title">Expense</span>
-      <button id="closeSummaryBtn" aria-label="Close Summary">&times;</button>
+      <button id="closeSummaryBtn">&times;</button>
     </div>
     <div class="summary-content">
       <div id="summaryAmount"></div>
@@ -75,13 +72,17 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Simple Delete Confirmation Modal -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content" style="max-width:300px;text-align:center;">
+      <p id="confirmMessage">Delete this expense?</p>
+      <div style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:center;">
+        <button id="cancelDelete">Cancel</button>
+        <button id="confirmDeleteBtn" style="background:#e53935;color:#fff;">Delete</button>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js');
-    }
-  </script>
 </body>
 </html>
