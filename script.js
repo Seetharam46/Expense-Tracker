@@ -4,13 +4,11 @@ window.onload = function () {
   const categoryFilter = document.getElementById('categoryFilter');
   const monthFilter = document.getElementById('monthFilter');
   const addBtn = document.getElementById('addBtn');
-
   const summaryPanel = document.getElementById('summaryPanel');
   const openSummaryBtn = document.getElementById('openSummaryBtn');
   const closeSummaryBtn = document.getElementById('closeSummaryBtn');
   const summaryPanelBody = document.getElementById('summaryPanelBody');
   const summaryAmount = document.getElementById('summaryAmount');
-
   const modal = document.getElementById('expenseModal');
   const closeModal = document.getElementById('closeModal');
   const form = document.getElementById('expenseForm');
@@ -21,19 +19,16 @@ window.onload = function () {
   const amountInput = document.getElementById('amount');
   const noteInput = document.getElementById('note');
   const editIdx = document.getElementById('editIdx');
-
   // Delete modal
   const confirmModal = document.getElementById('confirmModal');
   const confirmMessage = document.getElementById('confirmMessage');
   const cancelDeleteBtn = document.getElementById('cancelDelete');
   const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-
   let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
   let lastUsedCategory = localStorage.getItem('lastUsedCategory') || '';
   let lastDeleted = null;
   let lastDeletedIndex = null;
   let deleteIndexPending = null;
-
   const getMonthStr = (dt = new Date()) =>
     dt.toLocaleString('default', { month: 'long', year: 'numeric' });
   const getDay = (dt = new Date()) => dt.getDate().toString().padStart(2, '0');
@@ -44,7 +39,6 @@ window.onload = function () {
     editIdx.value = '';
     categorySelect.value = lastUsedCategory || '';
     saveBtn.disabled = true;
-
     if (isEdit) {
       const e = expenses[idx];
       amountInput.value = e.amount;
@@ -57,6 +51,7 @@ window.onload = function () {
     }
     setTimeout(() => amountInput.focus(), 150);
   }
+
   function closeMainModal() { modal.classList.remove('show'); }
 
   form.addEventListener('input', () => {
@@ -70,7 +65,6 @@ window.onload = function () {
     const category = categorySelect.value;
     const note = noteInput.value.trim();
     if (isNaN(amount) || amount === 0 || !category || !note) return false;
-
     const now = new Date();
     if (editIdx.value) {
       const idx = +editIdx.value;
@@ -109,9 +103,9 @@ window.onload = function () {
       `<div class="summary-inline-amount ${total < 0 ? 'negative' : 'positive'}">₹ ${total}</div>`;
     summaryPanelBody.innerHTML = filtered.length === 0 ? `<div>No expenses found.</div>` : '';
   }
+
   function openSummaryPanel() { renderSummaryPanel(); summaryPanel.classList.add('open'); }
   function closeSummaryPanel() { summaryPanel.classList.remove('open'); }
-
   openSummaryBtn.onclick = openSummaryPanel;
   closeSummaryBtn.onclick = closeSummaryPanel;
   searchInput.addEventListener('input', renderAll);
@@ -125,11 +119,14 @@ window.onload = function () {
     confirmMessage.textContent = `Delete "${e.note}" of ₹ ${e.amount}?`;
     confirmModal.classList.add('show');
   }
+
   function closeDeleteModal() {
     confirmModal.classList.remove('show');
     deleteIndexPending = null;
   }
+
   cancelDeleteBtn.onclick = closeDeleteModal;
+
   confirmDeleteBtn.onclick = () => {
     if (deleteIndexPending !== null) {
       lastDeleted = expenses[deleteIndexPending];
@@ -142,8 +139,8 @@ window.onload = function () {
     }
     closeDeleteModal();
   };
-  confirmModal.onclick = (e) => { if (e.target.id === 'confirmModal') closeDeleteModal(); };
 
+  confirmModal.onclick = (e) => { if (e.target.id === 'confirmModal') closeDeleteModal(); };
   undoBtn.onclick = () => {
     if (lastDeleted) {
       expenses.splice(lastDeletedIndex, 0, lastDeleted);
@@ -159,13 +156,26 @@ window.onload = function () {
     const s = searchInput.value.toLowerCase();
     if (s) list = list.filter(e => e.note.toLowerCase().includes(s) || e.amount.toString().includes(s));
     if (categoryFilter.value !== 'all') list = list.filter(e => e.category === categoryFilter.value);
-    if (monthFilter.value !== 'all') list = list.filter(e => e.month === monthFilter.value);
 
-    let months = [...new Set(expenses.map(e => e.month))];
+    // Preserve selected month filter value before repopulating options
+    const currentMonth = monthFilter.value;
+
+    // Populate months from filtered list only
+    let months = [...new Set(list.map(e => e.month))];
     if (!months.length) months = [getMonthStr()];
     monthFilter.innerHTML =
       '<option value="all">All Months</option>' +
       months.map(m => `<option>${m}</option>`).join('');
+
+    // Restore previous selected month if still available, else 'all'
+    if (months.includes(currentMonth)) {
+      monthFilter.value = currentMonth;
+    } else {
+      monthFilter.value = 'all';
+    }
+
+    // Filter by selected month after updating options
+    if (monthFilter.value !== 'all') list = list.filter(e => e.month === monthFilter.value);
 
     expenseList.innerHTML = '';
     const grouped = {};
@@ -173,7 +183,6 @@ window.onload = function () {
       if (!grouped[e.month]) grouped[e.month] = [];
       grouped[e.month].push(e);
     });
-
     months.forEach(m => {
       if (!grouped[m]) return;
       expenseList.innerHTML += `<div class="month-row">${m}</div>`;
